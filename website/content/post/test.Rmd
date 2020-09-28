@@ -1,0 +1,65 @@
+---
+title: "Delay reasons for TTC in May 2020"
+author: "Junjie Peng"
+date: "2020/9/27"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+abstract: The public transportations are convenient and low carbon, but the problem
+  of bus delays is troubling.In this study, we explored the bus delay data provided
+  by THE TTC and found that the main reason for bus delay in May 2020 were mechanical
+  problem and Utilized off Route.Our findings may help reduce the problem of bus delays.
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+Public transport is an important part of daily life. Compared with other modes of transport, it has advantages such as low cost and low carbon emissions.But it also has some disadvantages, for example, the problem that the bus is late is very disturbing.Long waits are likely to disrupt travelers' plans, with unpleasant results.Therefore, this study intends to briefly explore the main reasons for bus delay and some improvement methods from the data of bus delay provided by TTC.
+
+To ensure the timeliness of the data, the study only selected data from May 2020.Among the many categories provided by the data, only the reasons for the delay were selected for study.Although there may be a lot of distractions associated with such a choice, the purpose of this study is to provide a simple and intuitive understanding of the causes of bus delays, so this study has some significance for those who do not know the public transport system.The following content will show the code of data extraction and the bar chart of the reason of bus delay, followed by the discussion of the data results and the reflection on the research itself.
+
+
+```{r, message=FALSE, warning=FALSE}
+library(opendatatoronto)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r}
+# get package for TTC delay data
+list_package_resources("e271cdae-8788-4980-96ce-6a5c95bc6618")
+# get package for TTC delay data in May 2020
+TTC_delay_2020 <- get_resource("fac1d636-8158-47ec-bfa2-01bc7d061f46")
+TTC_delay_2020$`May 2020`
+
+```
+
+# Plots
+
+```{r}
+ggplot(TTC_delay_2020$`May 2020`, aes(x=Incident)) + geom_bar() + 
+  theme(axis.text.x = element_text(angle = 30, hjust = 1))
+```
+
+# Discussion
+
+From the histgram it is easily to find out that there are two main reasons for the delay of TTC in May 2020, which are 'Mechanical' and 'Utilized off Route'.Therefore, in order to decrease the time of delay the TTC could focous on these two aspects. To be more specific, for the mechanical problems, it seems inevitable, but periodic maintenance of equipment and vehicles should effectively reduce the occurrence of problems. For the incident of 'Utilized off Route',To be honest, I have no idea about the management of public transportation system, so I can only make a simple conjecture here.This may be a problem caused by improper vehicle routing, so a proper route planning may reduce the occurrence of accidents.For example, try to avoid a large number of routes overlap, or when the need to dispatch vehicles to pick up a number of idle shifts, etc.
+
+# Weaknesses and future directions
+
+Objectively speaking, this simple study has many problems and needs to be improved.First of all, the sample size I selected is very small, just the data of May 2020.We know that 2020 is a very special year, and the way we use public transport in the event of quarantine may be very different from what we used to be, that's something that this study didn't take into account.Secondly, this data includes a large number of sites and regions, but the differences among different regions are not taken into account in the study of the reasons for delay, because the distribution of these reasons is likely to be uneven. The two main reasons mentioned above may be clustered in a specific small range rather than common reasons in general.Therefore, in further studies, time and regional differences should be taken into account, so that such results will be more convincing.
+
+# Reference
+
+- Sharla Gelfand (2020). opendatatoronto: Access the City of Toronto Open Data Portal. R package version 0.1.3.
+  https://CRAN.R-project.org/package=opendatatoronto
+- Hadley Wickham, Romain François, Lionel Henry and Kirill Müller (2020). dplyr: A Grammar of Data Manipulation. R package version 1.0.0.
+  https://CRAN.R-project.org/package=dplyr
+- H. Wickham. ggplot2: Elegant Graphics for Data Analysis. Springer-Verlag New York, 2016.
+- R Core Team (2019). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. URL
+  https://www.R-project.org/.
+- Toronto Transit Commission(2020). TTC Bus Delay Data.opendatatoronto: Access the City of Toronto Open Data Portal.https://open.toronto.ca/dataset/ttc-bus-delay-data/
